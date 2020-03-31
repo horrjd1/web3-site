@@ -13,7 +13,7 @@ app.config.from_object('config')
 #
 # Mongo #
 
-connect('Lab_4-1')
+connect('Web_3_db')
 
 # can create User objects; the argument Document passed into 
 # the constructor tells the system to map this class to a 
@@ -28,8 +28,8 @@ class Country(Document):
 
 # creating a user
 # WARNING!!!!! THIS WILL RUN EVERYTIME THE SERVER IS STARTED ETC
-jamie = User(first_name='Jamie', last_name='Horrell')
-jamie.save()
+# jamie = User(first_name='Jamie', last_name='Horrell')
+# jamie.save()
 
 
 @app.route('/data_raw')
@@ -42,9 +42,6 @@ def showData():
       d = list(r)
       for data in d:
          print(data)
-
-
-
 
 @app.route('/create_countries')
 def createCountries():
@@ -96,7 +93,7 @@ def loadData():
 
 
 
-
+#can be deleted
 
 ###########################
 #
@@ -106,10 +103,6 @@ def loadData():
 def hello_name(name):
    return 'Hello %s!' % name
 #
-###########################
-
-
-###########################
 #
 # redirects
 #
@@ -133,4 +126,4 @@ def hello_user(name):
 
 
 if __name__ =="__main__":
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, port=8080)

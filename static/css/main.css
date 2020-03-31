@@ -23,12 +23,23 @@
   }
 
 */
+body {
+  color: #351e47;
+}
+a {
+  color: #351e47;
+  text-decoration: underline;
+}
+a:hover {
+  color: #572f79;
+}
+
 .jumbotron {
     background-color: #dddddd;
-	  background-image: url(""), linear-gradient(45deg, #fd746c 15%, #ff9068 85%);
-	  background-image: url(""), -moz-linear-gradient(45deg, #fd746c 15%, #ff9068 85%);
-	  background-image: url(""), -webkit-linear-gradient(45deg, #fd746c 15%, #ff9068 85%);
-	  background-image: url(""), -ms-linear-gradient(45deg, #fd746c 15%, #ff9068 85%);
+	  background-image: url(""), linear-gradient(45deg, #d56f3e 15%, #d56f3e 85%);
+	  background-image: url(""), -moz-linear-gradient(45deg, #d56f3e 15%, #d56f3e 85%);
+	  background-image: url(""), -webkit-linear-gradient(45deg, #d56f3e 15%, #d56f3e 85%);
+	  background-image: url(""), -ms-linear-gradient(45deg, #d56f3e 15%, #d56f3e 85%);
     background-repeat: no-repeat;
     background-size: cover;
     padding: 150px;
@@ -44,6 +55,11 @@
 	clip-path: polygon(0% 300px, 0 0, 100% 0, 100% 300px, 50% 500px, 0 300px);
     padding-bottom: 350px;
     */
+  }
+
+  .paragraph {
+    padding-top: 20px;
+    padding-bottom: 20px;;
   }
 
   /*swap with clip-path
