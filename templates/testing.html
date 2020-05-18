@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}"/>
+    
+
+  <!--Scripts-->
+  <script src="scripts/script.js"></script>
+
+
+  <title>SITE NAME</title>
+</head>
+
+<body>
+
+  {% include 'components/navigation.html' %}
+
+  <h2>Insert a country</h2>
+  <form method="POST" action="{{ url_for('add_country') }}">
+    <input id="name" name="name" type="text"><label for="name">Name</label>
+    <input id="abbreviation" name="abbreviation" type="text"><label for="abbreviation">Abbreviation </label>
+    <input id="population" name="population" type="text"><label for="population">Population</label>
+    <button type="submit" class="btn" name="action">Submit</button>
+  </form>
+</body>
+</html>
