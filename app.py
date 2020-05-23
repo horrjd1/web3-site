@@ -69,6 +69,7 @@ def TestingPage():
 
 @app.route('/data_raw')
 def return_data():
+
 	dataList = []
 	for file in os.listdir(app.config['FILES_FOLDER']):
 		filename = os.fsdecode(file)
@@ -79,7 +80,7 @@ def return_data():
 		dataList.append(d)
 	return json.dumps(dataList)
 
-# Generic APIs for Checkpoints #
+# APIs #
 
 @app.route('/api/countries', methods=['GET'])
 @app.route('/api/countries/<country_name>', methods=['GET'])
