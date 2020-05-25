@@ -1,83 +1,85 @@
 $(document).ready(function () {
-    $.get('/api/countries', function (data) {
-        console.log("Ajax testing")
-        console.log(JSON.stringify(data))
-        jsonData = JSON.stringify(data)
+  
+  $.get("/api/countries", function (data) {
+    // If successful make the graph
 
-        // set the dimensions and margins of the graph
-        var margin = {top: 10, right: 30, bottom: 40, left: 50},
-            width = window.innerWidth - margin.left - margin.right,
-            height = 520 - margin.top - margin.bottom;
-        
-        // append the svg object to the body of the page
-        var Svg = d3.select("#d3_graph")
-          .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")")
-        
-        //Read the data
-        d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv", function(data) {
-        
-          // Add X axis
-          var x = d3.scaleLinear()
-            .domain([4*0.95, 8*1.001])
-            .range([ 0, width ])
-          Svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(10))
-            .select(".domain").remove()
-        
-          // Add Y axis
-          var y = d3.scaleLinear()
-            .domain([-0.001, 9*1.01])
-            .range([ height, 0])
-            .nice()
-          Svg.append("g")
-            .call(d3.axisLeft(y).tickSize(-width*1.3).ticks(7))
-            .select(".domain").remove()
-        
-          // Customization
-          Svg.selectAll(".tick line").attr("stroke", "#EBEBEB")
-        
-          // Add X axis label:
-          Svg.append("text")
-              .attr("text-anchor", "end")
-              .attr("x", width)
-              .attr("y", height + margin.top + 20)
-              .text("Sepal Length");
-        
-          // Y axis label:
-          Svg.append("text")
-              .attr("text-anchor", "end")
-              .attr("transform", "rotate(-90)")
-              .attr("y", -margin.left+20)
-              .attr("x", -margin.top)
-              .text("Petal Length")
-        
-          // Color scale: give me a specie name, I return a color
-          var color = d3.scaleOrdinal()
-            .domain(["setosa", "versicolor", "virginica" ])
-            .range([ "#402D54", "#D18975", "#8FD175"])
-        
-          // Add dots
-          Svg.append('g')
-            .selectAll("dot")
-            .data(data)
-            .enter()
-            .append("circle")
-              .attr("cx", function (d) { return x(d.Sepal_Length); } )
-              .attr("cy", function (d) { return y(d.Petal_Length); } )
-              .attr("r", 5)
-              .style("fill", function (d) { return color(d.Species) } )
-        
-        })
+    // Width and height
+    var w = 600;
+    var h = 400;
+    var padding = 40;
 
-    }).fail(function () {
-        alert("No Data Found")
-    });
+    // Setting the data to be used
+    var dataset = data;
+    var fileIncomeName = 'income_per_person_gdppercapita_ppp_inflation_adjusted'
+    var selectedYear = 2010
+
+    //scale functions
+    var xScale = d3
+      .scaleLinear()
+      .domain([
+        //lowest
+        0,
+        //highest
+        d3.max(dataset, function (d) {
+          console.log(d)
+          return d["data"][fileIncomeName][selectedYear];
+        }),
+      ])
+      .range([padding, w - padding * 2]);
+
+    var yScale = d3
+      .scaleLinear()
+      .domain([
+        0,
+        d3.max(dataset, function (d) {
+          return d['data'][fileIncomeName]['2010'];
+        }),
+      ])
+      .range([h - padding, padding]);
+
+    var xAxis = d3.axisBottom().scale(xScale).ticks(5);
+    var yAxis = d3.axisLeft().scale(yScale).ticks(5);
+
+    //Create the svg
+    var svg = d3
+      .select("#d3_graph")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+    // Draw the circles on the graph
+    svg
+      .selectAll("circle")
+      .data(dataset)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) {
+        return xScale(d['data'][fileIncomeName]['2010']);
+      })
+      .attr("cy", function (d) {
+        return yScale(d['data'][fileIncomeName]['2010']);
+      })
+      .attr("r", 5)
+      .attr("fill", "green");
+
+    // x axis
+    svg
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + (h - padding) + ")")
+      .call(xAxis);
+
+    // y axis
+    svg
+      .append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + padding + ", 0)")
+      .call(yAxis);
+
+    
+  }).fail(function () {
+    alert("No Data Found");
+  });
 });
 
 /*
