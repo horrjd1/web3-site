@@ -2,7 +2,7 @@
 # good tutorial for flask:
 # https://www.tutorialspoint.com/flask/flask_url_building.htm
 
-from flask import Flask, redirect, url_for, render_template, request, make_response, jsonify, abort
+from flask import Flask, Response, redirect, url_for, render_template, request, make_response, jsonify, abort
 from mongoengine import *
 import os
 import csv
@@ -31,17 +31,6 @@ class User(Document):
 class Country(Document):
     name = StringField()
     data = DictField()
-
-
-@app.route('/create_countries')
-def createCountries():
-    Country(name='Japan', abbreviation='JPN', population='126000000').save()
-    Country(name='New Zealand', abbreviation='NZ', population='5000000').save()
-    Country(name='Australia', abbreviation='AU', population='25000000').save()
-    Country(name='United States of America',
-            abbreviation='USA', population='331000000').save()
-
-    # return redirect('/countries')
 
 
 #
@@ -77,38 +66,45 @@ def TestingPage():
 
 @app.route('/data_raw_add')
 def add_data():
-   for file in os.listdir(app.config['FILES_FOLDER']):
-      filename = os.fsdecode(file)
-      path = os.path.join(app.config['FILES_FOLDER'], filename)
-      f = open(path)
-      r = csv.DictReader(f)
-      d = list(r)
-      for data in d:
-         country = Country()  # a blank placeholder country
-         dict = {}  # a blank placeholder data dict
-         for key in data:  # iterate through the header keys
-            if key == "country":
-               # check if this country already exists in the db
-               if Country.objects(name=data[key]):
-                  country = Country.objects(name=data[key])
-                  dict.update(data)
-               else:
-                  country = Country(name=data[key])
-            else:
-               # we want to trim off the ".csv" as we can't save anything with a "." as a mongodb field name
-               f = filename.replace(".csv", "")
-               if f in dict:  # check if this filename is already a field in the dict
-                  # if it is, just add a new subfield which is key : data[key] (value)
-                  dict[f][key] = data[key]
-               else:
-                  # if it is not, create a new object and assign it to the dict
-                  dict[f] = {key: data[key]}
-                  # add the data dict to the country
-            country.data = dict
-            print(country)
-         # save the country
-         country.save()
-   return redirect('/home'), 200
+    for file in os.listdir(app.config['FILES_FOLDER']):
+        filename = os.fsdecode(file)
+        path = os.path.join(app.config['FILES_FOLDER'], filename)
+        f = open(path)
+        r = csv.DictReader(f)
+        d = list(r)
+        for data in d:
+            country = Country()  # a blank placeholder country
+            dataDict = {}  # a blank placeholder data dict
+            for key in data:  # iterate through the header keys
+                # check if this country already exists in the db
+                if key == "country":
+                    print(data[key])
+                    # if the country already exists, replace the blank country with the existing country from the db, and replace the blank dict with the current country's data
+                    if Country.objects(name=data[key]):
+                        print('second-round')
+                        country = Country.objects(name=data[key])
+                        print(country)
+                        dataDict = Country.objects(name=data[key]).first().data
+                        print(dataDict)
+                    # if the country does not exist, we can use the new blank country we created above, and set the name
+                    else:
+                        country = Country(name=data[key])
+                else:
+                    # we want to trim off the ".csv" as we can't save anything with a "." as a mongodb field name
+                    fn = filename.replace(".csv", "")
+                    if fn in dataDict:  # check if this filename is already a field in the dict
+                        # if it is, just add a new subfield which is key : data[key] (value)
+                        dataDict[fn][key] = data[key]
+                    else:
+                        # if it is not, create a new object and assign it to the dict
+                        print(data[key])
+                        dataDict[fn] = {key: data[key]}
+
+                # add the data dict to the country
+                country.data = dataDict
+            # save the country
+            country.save()
+    return 'done'
 
 
 @app.route('/data_raw')
@@ -127,6 +123,7 @@ def return_data():
 # APIs #
 
 
+''' OLD Countries
 @app.route('/api/countries', methods=['GET'])
 @app.route('/api/countries/<country_name>', methods=['GET'])
 def getCountries(country_name=None):
@@ -139,7 +136,23 @@ def getCountries(country_name=None):
 
         return countryJSON
 
-###### TEST THESE ONES ######
+'''
+
+
+@app.route('/api/countries', methods=['GET'])
+def getCountries():
+    countries = Country.objects().to_json()
+    return Response(countries, mimetype="application/json", status=200)
+    
+    # Returns False because the first key is false.
+    # For dictionaries the all() function checks the keys, not the values.)
+
+
+
+
+
+
+###### FIX THESE ONES ######
 
 
 @app.route('/api/countries', methods=['POST'])
@@ -164,7 +177,6 @@ def delete_country(country_name):
     country.delete()
 
 
-
 # display 404 when abort(404)
 @app.errorhandler(404)
 def not_found(error):
@@ -176,6 +188,8 @@ def not_found(error):
 #
     # returns your name on the page
     #
+
+
 @app.route('/hello/<name>')
 def hello_name(name):
     return 'Hello %s!' % name
@@ -205,7 +219,6 @@ def hello_user(name):
         return redirect(url_for('hello_guest', guest=name))
 #
 ###########################
-
 
 
 # D3
