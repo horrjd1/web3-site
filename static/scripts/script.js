@@ -21,7 +21,6 @@ $(document).ready(function () {
         0,
         //highest
         d3.max(dataset, function (d) {
-          console.log(d)
           return d["data"][fileIncomeName][selectedYear];
         }),
       ])
@@ -47,6 +46,10 @@ $(document).ready(function () {
       .attr("width", w)
       .attr("height", h);
 
+    var tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
     // Draw the circles on the graph
     svg
       .selectAll("circle")
@@ -60,7 +63,23 @@ $(document).ready(function () {
         return yScale(d['data'][fileIncomeName]['2010']);
       })
       .attr("r", 5)
-      .attr("fill", "green");
+      .attr("fill", "green")
+      // Tooltips
+      .on("mouseover", function(d) {
+        console.log(d)
+        tooltip.transition()
+             .duration(200)
+             .style("opacity", .9);
+        tooltip.html(d["name"] + "<br/>X Axis: " + d['data'][fileIncomeName]['2010'] 
+        + "<br/>Y Axis: " + d['data'][fileIncomeName]['2010'])
+             .style("left", (d3.event.pageX + 5) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("mouseout", function(d) {
+        tooltip.transition()
+             .duration(500)
+             .style("opacity", 0);
+    });
 
     // x axis
     svg

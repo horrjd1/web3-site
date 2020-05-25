@@ -49,12 +49,6 @@ a:hover {
 
     border-bottom-left-radius: 150% 300px;
     border-bottom-right-radius: 150% 400px;
-
-    /*
-    -webkit-clip-path: polygon(0 0, 80% 0, 35% 50%, 0 12%);
-	clip-path: polygon(0% 300px, 0 0, 100% 0, 100% 300px, 50% 500px, 0 300px);
-    padding-bottom: 350px;
-    */
   }
 
   .paragraph {
@@ -62,16 +56,13 @@ a:hover {
     padding-bottom: 20px;;
   }
 
-  /*swap with clip-path
-.jumbotron .container{
-    border-bottom-left-radius: 150% 200px;
-    border-bottom-right-radius: 150% 200px;
-}
-*/
-
-/*
-  .jumbotron .container {
-    border-bottom-left-radius: 150% 200px;
-    border-bottom-right-radius: 150% 200px;
+  .circle {
+    stroke: #000;
   }
-  */
+  
+  .tooltip {
+    position: absolute;
+    width: 200px;
+    height: 28px;
+    pointer-events: none;
+  }
