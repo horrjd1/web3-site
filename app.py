@@ -81,14 +81,10 @@ def add_data():
                     print(data[key])
                     # if the country already exists, replace the blank country with the existing country from the db, and replace the blank dict with the current country's data
                     if Country.objects(name=data[key]):
-                        print('second-round')
-                        country = Country.objects(name=data[key])
-                        print(country)
-                        dataDict = Country.objects(name=data[key]).first().data
-                        print(dataDict)
-                    # if the country does not exist, we can use the new blank country we created above, and set the name
+                        country = Country.objects(name=data[key]).first()
+                        dataDict = country['data']
                     else:
-                        country = Country(name=data[key])
+                        country['name'] = data[key]
                 else:
                     # we want to trim off the ".csv" as we can't save anything with a "." as a mongodb field name
                     fn = filename.replace(".csv", "")
