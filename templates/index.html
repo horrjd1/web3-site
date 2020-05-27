@@ -18,6 +18,11 @@
   <script src="{{ url_for('static', filename='scripts/jquery-3.5.1.js') }}"></script>
   <script src="https://d3js.org/d3.v5.js"></script>
   <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+  <!--
+  Using d3-simple-slider for the year slider 
+  Github link: https://github.com/johnwalley/d3-simple-slider 
+  -->
+  <script src="https://unpkg.com/d3-simple-slider"></script>
 
 
   <title>{{ title }}</title>
@@ -40,6 +45,7 @@
 
     <h1>Graph</h1>
     <div id="d3_graph"></div>
+    <div id="slider_years"></div>
 
     <h1>What is this site</h1>
     <p class="h5 paragraph">Here is some text talking about some stuff. 
