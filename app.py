@@ -52,18 +52,12 @@ def inspiration():
     return render_template('inspiration.html')
 
 
-@app.route('/loadData')
-def loadData():
-    return 'Success'
-
-
 @app.route('/testing')
 def TestingPage():
     return render_template('testing.html')
 
-# APIs #
 
-
+# Adds the csv data to the database
 @app.route('/data_raw_add')
 def add_data():
     for file in os.listdir(app.config['FILES_FOLDER']):
@@ -103,58 +97,26 @@ def add_data():
     return 'done'
 
 
-@app.route('/data_raw')
-def return_data():
-
-    dataList = []
-    for file in os.listdir(app.config['FILES_FOLDER']):
-        filename = os.fsdecode(file)
-        path = os.path.join(app.config['FILES_FOLDER'], filename)
-        f = open(path)
-        r = csv.reader(f)
-        d = list(r)
-        dataList.append(d)
-    return json.dumps(dataList)
-
 # APIs #
 
 
-''' OLD Countries
 @app.route('/api/countries', methods=['GET'])
 @app.route('/api/countries/<country_name>', methods=['GET'])
 def getCountries(country_name=None):
     if country_name == None:
-        return Country.objects.to_json()
+        countries = Country.objects().to_json()
+        return Response(countries, mimetype="application/json", status=200)
     else:
-        countryJSON = Country.objects.get(name=country_name).to_json()
-        if len(countryJSON) == 0:
+        country = Country.objects.get(name=country_name).to_json()
+        if len(country) == 0:
             abort(404)
-
-        return countryJSON
-
-'''
-
-
-@app.route('/api/countries', methods=['GET'])
-def getCountries():
-    countries = Country.objects().to_json()
-    return Response(countries, mimetype="application/json", status=200)
-    
-    # Returns False because the first key is false.
-    # For dictionaries the all() function checks the keys, not the values.)
-
-
-
-
-
-
-###### FIX THESE ONES ######
+        return Response(country, mimetype="application/json", status=200)
 
 
 @app.route('/api/countries', methods=['POST'])
 def add_country():
     # make this line more efficient
-    if not request.json or not 'name' in request.json or not 'abbreviation' in request.json or not 'population' in request.json:
+    if not request.json or not 'name' in request.json:
         abort(400)
     newName = request.json["name"]
     newAbbreviation = request.json["abbreviation"]

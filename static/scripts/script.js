@@ -103,6 +103,23 @@ function getMax(file, cleanedData) {
 }
 
 function drawCircles(cleanedData, year, graphsvg, xScale, yScale) {
+
+ //getting only the countries that have data for the selected year
+ /*
+ var circleData = []
+ cleanedData.forEach(function (d) {
+   if (d["data"][fileY][year] != null &&
+   d["data"][fileY][year] != undefined &&
+   year in d["data"][fileY] &&
+   d["data"][fileY][year] != '' &&
+   d["data"][fileX][year] != null &&
+   d["data"][fileX][year] != undefined &&
+   year in d["data"][fileX] &&
+   d["data"][fileX][year] != '') {
+     circleData.push(d)
+   }
+*/
+
   // Draw the circles on the graph
   console.log(svg)
   graphsvg
