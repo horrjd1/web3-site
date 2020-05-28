@@ -93,34 +93,31 @@ def getCountries(country_name=None):
         countries = Country.objects().to_json()
         return Response(countries, mimetype="application/json", status=200)
     else:
-        country = Country.objects.get(name=country_name).to_json()
-        if len(country) == 0:
+        if Country.objects(name=country_name).count() == 0:
             abort(404)
+        country = Country.objects.get(name=country_name)
         return Response(country, mimetype="application/json", status=200)
 
 # Post
 @app.route('/api/countries', methods=['POST'])
 def add_country():
-    # make this line more efficient
-    if not request.json or not 'name' in request.json:
+    if not request.json or not 'name' in request.json or not 'data' in request.json:
         abort(400)
     newName = request.json["name"]
-    newAbbreviation = request.json["abbreviation"]
-    newPopulation = request.json["population"]
-    Country(name=newName, abbreviation=newAbbreviation,
-            population=newPopulation).save()
-    return redirect('/api/countries'), 201
+    newData = request.json["data"]
+    Country(name=newName, data=newData).save()
+    redirectURL = f'/api/countries/{newName}'
+    return redirect(redirectURL), 201
 
 # Delete
 @app.route('/api/countries/<country_name>', methods=['DELETE'])
 def delete_country(country_name):
     # checks to see if country exists
-    countryJSON = Country.objects.get(name=country_name).to_json()
-    if len(countryJSON) == 0:
+    if Country.objects(name=country_name).count() == 0:
         abort(404)
     country = Country.objects.get(name=country_name)
     country.delete()
-
+    return redirect('/api/countries'), 200
 
 
 # display 404 when abort(404)
