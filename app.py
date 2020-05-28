@@ -95,7 +95,7 @@ def getCountries(country_name=None):
     else:
         if Country.objects(name=country_name).count() == 0:
             abort(404)
-        country = Country.objects.get(name=country_name)
+        country = Country.objects.get(name=country_name).to_json()
         return Response(country, mimetype="application/json", status=200)
 
 # Post
