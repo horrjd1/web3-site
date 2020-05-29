@@ -1,0 +1,126 @@
+<h1>Using the API</h1>
+    <p>The following are http endpoints to help you get data from our site, as well as insert your own.</p>
+
+    <div class="alert alert-info" role="alert">GET /api/countries</div>
+    <p>This will list all the countries in our database along with all of their data in a json format. Here is an
+      example output
+      <pre><code>
+        [
+          {
+            "_id": {
+              "$oid": "5ecc6e8727593e13da565aba"
+            },
+            "name": "New Zealand",
+            "data": {
+              "income_per_person_gdppercapita_ppp_inflation_adjusted": {
+                "1800": "658",
+                "1801": "658",
+                "1802": "658",
+                "1803": "658",
+              },
+              "population_total": {
+                "1800": "200000",
+                "1801": "193000",
+                "1802": "187000",
+                "1803": "180000",
+              }
+            }
+          },
+          {
+            "_id": {
+              "$oid": "5ecc6e8727593e13da565abb"
+            },
+            "name": "Nicaragua",
+            "data": {
+              "income_per_person_gdppercapita_ppp_inflation_adjusted": {
+                "1800": "973", 
+                "1801": "973", 
+                "1802": "973", 
+                "1803": "974"
+              },
+              "population_total": {
+                "1800": "186000", 
+                "1801": "186000", 
+                "1802": "186000", 
+                "1803": "186000"
+              }
+            }
+          } 
+        ] 
+      </code></pre>
+    </p>
+
+    <div class="alert alert-info" role="alert">GET /api/countries/&lt;optional:country_name&gt;</div>
+    <p>Specifying a country name will retrieve data from that single country. The country name is case sensitive and accepts spaces. So an example of a request will be</p>
+    <pre><code> /api/countries/New Zealand</code></pre>
+    <p>This wll return the country data in the following format:</p>
+    <pre><code>
+        {
+          "_id": {
+            "$oid": "5ecc6e8727593e13da565aba"
+          },
+          "name": "New Zealand",
+          "data": {
+            "income_per_person_gdppercapita_ppp_inflation_adjusted": {
+              "1800": "658",
+              "1801": "658",
+              "1802": "658",
+              "1803": "658",
+            },
+            "population_total": {
+              "1800": "200000",
+              "1801": "193000",
+              "1802": "187000",
+              "1803": "180000",
+            }
+          }
+        }   
+      </code></pre>
+
+    <div class="alert alert-info" role="alert">POST /api/countries</div>
+    <p>This is used to add a country to our database. Only one country can be added in a single requests. It expects a json request with the following data structure:</p>
+    <pre><code>
+        {
+          "name":"New Country 2",
+          "data": {
+            "population_total": {
+              "2000":"1000",
+              "2001":"1100"
+            }
+            "income_per_person_gdppercapita_ppp_inflation_adjusted": {
+              "2000":"1670",
+              "2001":"1700"
+            }
+          }
+        }
+      </code></pre>
+      <p>The request is required to have name and data keys.</p>
+      <p>The newly created country's data will be displayed after a successful request. A successful request will return with a 201 status codes. If there was an error with the data sent then it will return with a status code 400. More information about what these codes mean can be found in the status codes table below.</p>
+
+    <div class="alert alert-info" role="alert">DELETE /api/countries/&lt;optional:country_name&gt;</div>
+    <p>This will delete a country from our database. The country name is case sensitive and accepts spaces. So an example of a request will be</p>
+    <pre><code> /api/countries/New Zealand</code></pre>
+    <p>A successful request will return with a status code of 200. If the country name specified wasn't found a 404 error will be returned.</p>
+
+
+    <table class="status_codes">
+      <tr>
+        <th colspan="2">Status Code Summary</th>
+      </tr>
+      <tr>
+        <td>200 - OK</td>
+        <td>Everything worked as expected</td>
+      </tr>
+      <tr>
+        <td>201 - Created</td>
+        <td>The data specified has been accepted and the provided country has been added to the database</td>
+      </tr>
+      <tr>
+        <td>400 - Bad Request</td>
+        <td>The data sent with the request wasn't accepted. Most likely because it was missing required parameters. Check that you request contains the required parameters specified in the POST section.</td>
+      </tr>
+      <tr>
+        <td>404 - Not Found</td>
+        <td>The country requested wasn't found and doesn't exist in our database. Try double checking your spelling.</td>
+      </tr>
+    </table>
