@@ -11,30 +11,16 @@ import json
 app = Flask(__name__)
 app.config.from_object('config')
 
-###########################
-#
+
 # Mongo #
 
 connect('Web_3_db')
-
-# can create User objects; the argument Document passed into
-# the constructor tells the system to map this class to a
-# MongoDB document.
-
-
-class User(Document):
-    email = StringField()
-    first_name = StringField()
-    last_name = StringField()
-
 
 class Country(Document):
     name = StringField()
     data = DictField()
 
 
-#
-###########################
 
 
 # Routes #
@@ -52,18 +38,12 @@ def inspiration():
     return render_template('inspiration.html')
 
 
-@app.route('/loadData')
-def loadData():
-    return 'Success'
-
-
-@app.route('/testing')
+@app.route('/post')
 def TestingPage():
     return render_template('testing.html')
 
-# APIs #
 
-
+# Adds the csv data to the database
 @app.route('/data_raw_add')
 def add_data():
     for file in os.listdir(app.config['FILES_FOLDER']):
@@ -103,74 +83,41 @@ def add_data():
     return 'done'
 
 
-@app.route('/data_raw')
-def return_data():
-
-    dataList = []
-    for file in os.listdir(app.config['FILES_FOLDER']):
-        filename = os.fsdecode(file)
-        path = os.path.join(app.config['FILES_FOLDER'], filename)
-        f = open(path)
-        r = csv.reader(f)
-        d = list(r)
-        dataList.append(d)
-    return json.dumps(dataList)
-
 # APIs #
 
-
-''' OLD Countries
+# Gets
 @app.route('/api/countries', methods=['GET'])
 @app.route('/api/countries/<country_name>', methods=['GET'])
 def getCountries(country_name=None):
     if country_name == None:
-        return Country.objects.to_json()
+        countries = Country.objects().to_json()
+        return Response(countries, mimetype="application/json", status=200)
     else:
-        countryJSON = Country.objects.get(name=country_name).to_json()
-        if len(countryJSON) == 0:
+        if Country.objects(name=country_name).count() == 0:
             abort(404)
+        country = Country.objects.get(name=country_name).to_json()
+        return Response(country, mimetype="application/json", status=200)
 
-        return countryJSON
-
-'''
-
-
-@app.route('/api/countries', methods=['GET'])
-def getCountries():
-    countries = Country.objects().to_json()
-    return Response(countries, mimetype="application/json", status=200)
-    
-    # Returns False because the first key is false.
-    # For dictionaries the all() function checks the keys, not the values.)
-
-
-
-
-
-
-###### FIX THESE ONES ######
-
-
+# Post
 @app.route('/api/countries', methods=['POST'])
 def add_country():
-    # make this line more efficient
-    if not request.json or not 'name' in request.json or not 'abbreviation' in request.json or not 'population' in request.json:
+    if not request.json or not 'name' in request.json or not 'data' in request.json:
         abort(400)
     newName = request.json["name"]
-    newAbbreviation = request.json["abbreviation"]
-    newPopulation = request.json["population"]
-    Country(name=newName, abbreviation=newAbbreviation,
-            population=newPopulation).save()
-    return redirect('/api/countries'), 201
+    newData = request.json["data"]
+    Country(name=newName, data=newData).save()
+    redirectURL = f'/api/countries/{newName}'
+    return redirect(redirectURL), 201
 
-
+# Delete
 @app.route('/api/countries/<country_name>', methods=['DELETE'])
 def delete_country(country_name):
-    countryJSON = Country.objects.get(name=country_name).to_json()
-    if len(countryJSON) == 0:
+    # checks to see if country exists
+    if Country.objects(name=country_name).count() == 0:
         abort(404)
-    country = Country.objects(name=country_name)
+    country = Country.objects.get(name=country_name)
     country.delete()
+    return redirect('/api/countries'), 200
 
 
 # display 404 when abort(404)
@@ -178,50 +125,6 @@ def delete_country(country_name):
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-# can be deleted
-
-###########################
-#
-    # returns your name on the page
-    #
-
-
-@app.route('/hello/<name>')
-def hello_name(name):
-    return 'Hello %s!' % name
-    #
-    #
-    # redirects
-    #
-
-
-@app.route('/admin')
-def hello_admin():
-    return 'You are an Admin, good job!'
-
-
-@app.route('/guest/<guest>')
-def hello_guest(guest):
-    return 'Hello guest %s' % guest
-
-    # redirects if name is admin
-
-
-@app.route('/user/<name>')
-def hello_user(name):
-    if name == 'admin':
-        return redirect(url_for('hello_admin'))
-    else:
-        return redirect(url_for('hello_guest', guest=name))
-#
-###########################
-
-
-# D3
-
-@app.route('/d3')
-def d3():
-    return render_template('d3.html')
 
 
 if __name__ == "__main__":

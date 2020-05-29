@@ -103,6 +103,23 @@ function getMax(file, cleanedData) {
 }
 
 function drawCircles(cleanedData, year, graphsvg, xScale, yScale) {
+
+ //getting only the countries that have data for the selected year
+ /*
+ var circleData = []
+ cleanedData.forEach(function (d) {
+   if (d["data"][fileY][year] != null &&
+   d["data"][fileY][year] != undefined &&
+   year in d["data"][fileY] &&
+   d["data"][fileY][year] != '' &&
+   d["data"][fileX][year] != null &&
+   d["data"][fileX][year] != undefined &&
+   year in d["data"][fileX] &&
+   d["data"][fileX][year] != '') {
+     circleData.push(d)
+   }
+*/
+
   // Draw the circles on the graph
   console.log(svg)
   graphsvg
@@ -117,7 +134,7 @@ function drawCircles(cleanedData, year, graphsvg, xScale, yScale) {
       return yScale(d["data"][fileY][year]);
     })
     .attr("r", 5)
-    .attr("fill", "green")
+    .attr("fill", "#432371")
     // Tooltips
     .on("mouseover", function (d) {
       console.log(d);
@@ -216,7 +233,6 @@ function changeGraphYear(year) {
 
   svg
     .selectAll("circle")
-    .attr("fill", "red")
     .attr("cx", function (d) {
       return xScale(d["data"][fileX][year]);
     })
