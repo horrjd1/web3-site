@@ -17,13 +17,13 @@ a:hover {
 
 .jumbotron {
   background-color: #dddddd;
-  background-image: url(""), linear-gradient(45deg, #542B8C 15%, #432371 85%);
-  background-image: url(""), -moz-linear-gradient(45deg, #542B8C 15%, #432371 85%);
-  background-image: url(""), -webkit-linear-gradient(45deg, #542B8C 15%, #432371 85%);
-  background-image: url(""), -ms-linear-gradient(45deg, #542B8C 15%, #432371 85%);
+  background-image: url(""), linear-gradient(45deg, #542b8c 15%, #432371 85%);
+  background-image: url(""), -moz-linear-gradient(45deg, #542b8c 15%, #432371 85%);
+  background-image: url(""), -webkit-linear-gradient(45deg, #542b8c 15%, #432371 85%);
+  background-image: url(""), -ms-linear-gradient(45deg, #542b8c 15%, #432371 85%);
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 150px;
+  padding: 125px;
   color: white;
   text-align: center;
   border-bottom-left-radius: 150% 300px;
@@ -51,16 +51,33 @@ table {
   width: 100%;
 }
 
-th, td {
+th,
+td {
   text-align: left;
   padding: 8px;
 }
 
 tr:nth-child(odd) {
-  background-color: #f2f2f2;
+  background-color: #e0e0e0;
 }
 
 th {
-  background-color: #432371;
+  background-color: #542b8c;
   color: white;
+}
+
+#api-section {
+  background-color: #F3F7F4;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+}
+
+.alert-api {
+  color: #ffffff;
+  background-color: #542b8c;
+}
+
+.status_codes {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }

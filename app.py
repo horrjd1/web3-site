@@ -29,13 +29,14 @@ class Country(Document):
 @app.route('/index')
 @app.route('/home')
 def index():
-    title = "SITE TITLE"
+    title = "Country Stats"
     return render_template('index.html', title=title), 200
 
 
 @app.route('/inspiration')
 def inspiration():
-    return render_template('inspiration.html')
+    title = "Inspirations"
+    return render_template('inspiration.html', title=title), 200
 
 
 @app.route('/post')
