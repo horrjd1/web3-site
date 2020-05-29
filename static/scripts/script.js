@@ -134,7 +134,7 @@ function drawCircles(cleanedData, year, graphsvg, xScale, yScale) {
       return yScale(d["data"][fileY][year]);
     })
     .attr("r", 5)
-    .attr("fill", "green")
+    .attr("fill", "#432371")
     // Tooltips
     .on("mouseover", function (d) {
       console.log(d);
@@ -233,7 +233,6 @@ function changeGraphYear(year) {
 
   svg
     .selectAll("circle")
-    .attr("fill", "red")
     .attr("cx", function (d) {
       return xScale(d["data"][fileX][year]);
     })
