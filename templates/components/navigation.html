@@ -1,20 +1,22 @@
-<nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ url_for('index') }}">SITE BRAND</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('inspiration') }}">Inspiration</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Load Data</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="d-flex w-100 justify-content-between">
+    <a href="" class="navbar-brand mr-0">COUNTRY STAT</a>
+  </div>
+
+  <div class="navbar-collapse collapse" id="navbar9">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item">
+        <a class="nav-link mx-4" href="{{ url_for('index') }}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link mx-4" href="{{ url_for('inspiration') }}">Inspiration</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link mx-4" href="{{ url_for('get_countries') }}">API</a>
+      </li>
+    </ul>
+  </div>
+  <div class="d-flex w-100">
+    &nbsp;
+  </div>
+</nav>

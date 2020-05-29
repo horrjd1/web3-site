@@ -88,7 +88,7 @@ def add_data():
 # Gets
 @app.route('/api/countries', methods=['GET'])
 @app.route('/api/countries/<country_name>', methods=['GET'])
-def getCountries(country_name=None):
+def get_countries(country_name=None):
     if country_name == None:
         countries = Country.objects().to_json()
         return Response(countries, mimetype="application/json", status=200)
