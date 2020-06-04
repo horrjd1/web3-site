@@ -3,12 +3,14 @@
 # https://www.tutorialspoint.com/flask/flask_url_building.htm
 
 from flask import Flask, Response, redirect, url_for, render_template, request, make_response, jsonify, abort
+from flask_cors import CORS
 from mongoengine import *
 import os
 import csv
 import json
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object('config')
 
 
