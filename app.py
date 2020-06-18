@@ -109,7 +109,7 @@ def add_country():
     newName = request.json["name"]
     newData = request.json["data"]
     Country(name=newName, data=newData).save()
-    redirectURL = f'/api/countries/{newName}'
+    redirectURL = '/api/countries'
     return redirect(redirectURL), 201
 
 # Delete
