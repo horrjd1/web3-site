@@ -1,31 +1,38 @@
+$brand-color: #432371;
+$brand-highlight: #542b8c;
+$api-section: #F3F7F4;
+
 body {
   color: #351e47;
 }
-
 a {
   color: #351e47;
   text-decoration: underline;
 }
-
 nav a {
   text-decoration: none;
 }
-
 a:hover {
   color: #572f79;
 }
 
 .jumbotron {
   background-color: #dddddd;
-  background-image: url(""), linear-gradient(45deg, #542b8c 15%, #432371 85%);
-  background-image: url(""), -moz-linear-gradient(45deg, #542b8c 15%, #432371 85%);
-  background-image: url(""), -webkit-linear-gradient(45deg, #542b8c 15%, #432371 85%);
-  background-image: url(""), -ms-linear-gradient(45deg, #542b8c 15%, #432371 85%);
+  background-image: url(""),
+    linear-gradient(45deg, $brand-highlight 15%, $brand-color 85%);
+  background-image: url(""),
+    -moz-linear-gradient(45deg, $brand-highlight 15%, $brand-color 85%);
+  background-image: url(""),
+    -webkit-linear-gradient(45deg, $brand-highlight 15%, $brand-color 85%);
+  background-image: url(""),
+    -ms-linear-gradient(45deg, $brand-highlight 15%, $brand-color 85%);
   background-repeat: no-repeat;
   background-size: cover;
   padding: 125px;
+
   color: white;
   text-align: center;
+
   border-bottom-left-radius: 150% 300px;
   border-bottom-right-radius: 150% 400px;
 }
@@ -62,22 +69,22 @@ tr:nth-child(odd) {
 }
 
 th {
-  background-color: #542b8c;
+  background-color: $brand-highlight;
   color: white;
 }
 
 #api-section {
-  background-color: #F3F7F4;
-  border-top-left-radius: 100px;
-  border-top-right-radius: 100px;
+    background-color: $api-section;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
 }
 
 .alert-api {
-  color: #ffffff;
-  background-color: #542b8c;
+    color: #ffffff;
+    background-color: $brand-highlight;
 }
 
 .status_codes {
-  margin-top: 50px;
-  margin-bottom: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }

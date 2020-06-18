@@ -3,12 +3,14 @@
 # https://www.tutorialspoint.com/flask/flask_url_building.htm
 
 from flask import Flask, Response, redirect, url_for, render_template, request, make_response, jsonify, abort
+from flask_cors import CORS
 from mongoengine import *
 import os
 import csv
 import json
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object('config')
 
 
@@ -29,13 +31,14 @@ class Country(Document):
 @app.route('/index')
 @app.route('/home')
 def index():
-    title = "SITE TITLE"
+    title = "Country Stats"
     return render_template('index.html', title=title), 200
 
 
 @app.route('/inspiration')
 def inspiration():
-    return render_template('inspiration.html')
+    title = "Inspirations"
+    return render_template('inspiration.html', title=title), 200
 
 
 @app.route('/post')
@@ -88,7 +91,7 @@ def add_data():
 # Gets
 @app.route('/api/countries', methods=['GET'])
 @app.route('/api/countries/<country_name>', methods=['GET'])
-def getCountries(country_name=None):
+def get_countries(country_name=None):
     if country_name == None:
         countries = Country.objects().to_json()
         return Response(countries, mimetype="application/json", status=200)
